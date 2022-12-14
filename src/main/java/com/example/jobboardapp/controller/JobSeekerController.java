@@ -1,6 +1,7 @@
 package com.example.jobboardapp.controller;
 
 import com.example.jobboardapp.dto.JobSeekerDTO;
+import com.example.jobboardapp.dto.JobSeekerRegisterDTO;
 import com.example.jobboardapp.dto.UserLoginDTO;
 import com.example.jobboardapp.entities.JobSeeker;
 import com.example.jobboardapp.exceptions.InvalidJobSeekerException;
@@ -33,7 +34,7 @@ public class JobSeekerController {
 	 * @PostMapping: Annotation for mapping HTTP POST requests onto specific handler methods.
 	 */
     @PostMapping("/createJobSeeker")
-    public ResponseEntity<Object> createJobSeeker(@RequestBody JobSeeker jobSeeker,
+    public ResponseEntity<Object> createJobSeeker(@RequestBody JobSeekerRegisterDTO jobSeekerRegisterDTO,
                                                   BindingResult bindingResult
     ) throws Exception {
         if (bindingResult.hasErrors()) {
@@ -47,7 +48,7 @@ public class JobSeekerController {
             throw new JobPortalValidationException(errMessages);
         }
         try {
-            iJobSeekerService.createJobSeeker(jobSeeker);
+            iJobSeekerService.createJobSeeker(jobSeekerRegisterDTO);
         } catch (InvalidJobSeekerException exception) {
             throw new InvalidJobSeekerException("One or more entered fields contain invalid objects.");
         }
