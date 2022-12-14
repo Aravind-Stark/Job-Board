@@ -25,6 +25,11 @@ public class JobController {
     @Autowired
     IJobService jobService;
 
+    @GetMapping("/hello")
+    public String sayHelloBro(){
+        return "Hello bro";
+    }
+
 
     /**
      * @RequestBody JobDTO

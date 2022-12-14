@@ -16,11 +16,11 @@ import java.util.stream.Stream;
 @SpringBootApplication
 public class JobBoardApplication {
 
-	/*@Autowired
-	IJobSeekerDao jobSeekerDao;
+/*	@Autowired
+	IJobSeekerDao jobSeekerDao;*/
 
 	@Autowired
-	IRecruiterDao recruiterDao;*/
+	IRecruiterDao recruiterDao;
 
 	/*@PostConstruct
 	public void initUsers() {
@@ -28,14 +28,15 @@ public class JobBoardApplication {
 				new JobSeeker(1L, "abc", "abc","123456", "javatechie@gmail.com","java"),
 				new JobSeeker(2L, "aravind", "stark","123456", "arvind@gmail.com","java")
 		).collect(Collectors.toList());
-		jobSeekerDao.saveAll(jobSeeker);
-
+		jobSeekerDao.saveAll(jobSeeker);*/
+	@PostConstruct
+	public void initUsers() {
 		List<Recruiter> recruiters = Stream.of(
 				new Recruiter("abc", "abc", "javatechie@gmail.com","123456","capgemini"),
 				new Recruiter( "aravind", "stark","arvind@gmail.com","123456","TCS")
 		).collect(Collectors.toList());
 		recruiterDao.saveAll(recruiters);
-	}*/
+	}
 	public static void main(String[] args) {
 		SpringApplication.run(JobBoardApplication.class, args);
 	}
