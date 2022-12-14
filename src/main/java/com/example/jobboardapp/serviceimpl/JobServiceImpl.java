@@ -52,8 +52,8 @@ public class JobServiceImpl implements IJobService {
 	}
 
 	@Override
-	public List<JobListDTO> findJobsBySkill(String name) {
-		List<Job> job = jobdao.findBySkillContainingIgnoreCase(name);
+	public List<JobListDTO> findJobsBySkill(String skill) {
+		List<Job> job = jobdao.findBySkillContainingIgnoreCase(skill);
 		List<JobListDTO> jobListDTOS = new ArrayList<>();
 		System.out.println("job size "+job.size());
 		for(int i=0;i<job.size();i++){
@@ -65,6 +65,7 @@ public class JobServiceImpl implements IJobService {
 			jobListDTO.setLocation(job.get(i).getLocation());
 			jobListDTO.setPostedDate(job.get(i).getPostedDate());
 			jobListDTO.setRecruiterId(job.get(i).getPostedBy().getId());
+			jobListDTO.setCompanyName(job.get(i).getPostedBy().getCompanyName());
 			jobListDTOS.add(jobListDTO);
 		}
 

@@ -64,11 +64,17 @@ public class JobSeekerServiceImpl implements IJobSeekerService {
 	}
 
 	@Override
-	public JobSeeker updateJobSeeker(Long id, JobSeeker jobSeeker) {
+	public JobSeeker updateJobSeeker(Long id, JobSeekerRegisterDTO jobSeekerRegisterDTO) {
 		if (jobSeekerDao.existsById(id)) {
+			JobSeeker jobSeeker = new JobSeeker();
+			jobSeeker.setFirstName(jobSeekerRegisterDTO.getFirstName());
+			jobSeeker.setLastName(jobSeekerRegisterDTO.getLastName());
+			jobSeeker.setEmail(jobSeekerRegisterDTO.getEmail());
+			jobSeeker.setPassword(jobSeekerRegisterDTO.getPassword());
+			jobSeeker.setSkill(jobSeekerRegisterDTO.getSkill());
 			return jobSeekerDao.save(jobSeeker);
 		} else {
-			throw new InvalidJobSeekerException();
+			throw new InvalidJobSeekerException("Please provide valid details");
 		}
 
 	}

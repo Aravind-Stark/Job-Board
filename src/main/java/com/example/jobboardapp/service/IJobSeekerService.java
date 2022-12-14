@@ -20,7 +20,7 @@ public interface IJobSeekerService {
 
 	JobSeeker createJobSeeker(JobSeekerRegisterDTO jobSeekerRegisterDTO) throws Exception;
 
-	JobSeeker updateJobSeeker(@Valid Long id, JobSeeker jobSeeker);
+	JobSeeker updateJobSeeker( Long id, JobSeekerRegisterDTO jobSeekerRegisterDTO);
 
 	List<JobSeekerDTO> findAllJobSeeker();
 

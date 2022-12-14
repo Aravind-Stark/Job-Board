@@ -2,6 +2,7 @@ package com.example.jobboardapp.service;
 
 import java.util.List;
 
+import com.example.jobboardapp.dto.RecruiterRegisterDTO;
 import com.example.jobboardapp.dto.UserLoginDTO;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +17,9 @@ public interface IRecruiterService {
 
 	Long getCurrentId();
 
-	Recruiter save(Recruiter recruiter);
+	Recruiter save(RecruiterRegisterDTO recruiterRegisterDTO);
 
-	Recruiter update(Long id, Recruiter recruiter);
+	Recruiter update(Long id, RecruiterRegisterDTO recruiterRegisterDTO);
 
     String recruiterLogin(UserLoginDTO userLoginDTO);
 

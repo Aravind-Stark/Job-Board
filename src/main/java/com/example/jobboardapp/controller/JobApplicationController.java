@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.example.jobboardapp.dto.JobApplicationStatusDTO;
 import com.example.jobboardapp.dto.JobApplicationsListDTO;
 import com.example.jobboardapp.dto.JobSeekerDetailsDTO;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,23 +39,14 @@ public class JobApplicationController {
 	@Autowired
 	IJobApplicationService jobApplicationService;
 
-	/*****************************************************************************************
-	 * Method      : applyToJob      
-	 * @param        jobApplicationDto
-	 * @throws       The method throws different exceptions based on improperly entered fields
-	 * @return       Response Entity of Object type
-	 * Description : This method creates a new Job Application
-	 * @postmapping: Post mapping requests a body from the user
-	 * 				 which is then persisted onto the database.
-	 ****************************************************************************************/
 	/**
-	 * @RequestBody JobApplicationDTO
-	 * @return Response Entity of String type
+	 * @Param jobApplicationDto
+	 * @return Response Entity of List<JobApplicationsListDTO>
 	 * Description : This method creates a new Job Application
 	 * @postmapping: Annotation for mapping HTTP POST requests onto specific handler methods.
 	 */
-
 	@PostMapping(value = "/apply")
+	@ApiOperation("This endpoint is used to create a new Job Application")
 	public ResponseEntity<String> applyToJob(@Valid @RequestBody JobApplicationDTO jobApplicationDto,
 			BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
@@ -76,8 +69,6 @@ public class JobApplicationController {
 		return new ResponseEntity<>("Job Applied Successfully", HttpStatus.CREATED);
 	}
 
-
-
 	/**
 	 * @Param jobSeekerID
 	 * @return Response Entity of List<JobApplicationsListDTO>
@@ -85,6 +76,7 @@ public class JobApplicationController {
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
 	@GetMapping(value = "/findJobSeekersApplications/{jobSeekerID}")
+	@ApiOperation("This endpoint is used to find all the jobs applied by jobSeeker")
 	public ResponseEntity<List<JobApplicationsListDTO>> findJobSeekersApplications(@PathVariable Long jobSeekerID) {
 		return new ResponseEntity<>(jobApplicationService.findJobSeekersApplications(jobSeekerID), HttpStatus.OK);
 	}
@@ -92,10 +84,11 @@ public class JobApplicationController {
 	/**
 	 * @Param recruiterId
 	 * @return Response Entity of List<JobSeekerDetailsDTO>
-	 * Description : This method all applications for the posted jobs
+	 * Description : This method used to find all applications for the posted jobs by recruiter
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
 	@GetMapping(value = "/viewAllApplicationsByRecruiterId/{recruiterId}")
+	@ApiOperation("This endpoint is used to find all applications for the posted jobs by recruiter")
 	public ResponseEntity<List<JobSeekerDetailsDTO>> viewAllApplicationsByRecruiterId(@PathVariable Long recruiterId) {
 		return new ResponseEntity<>(jobApplicationService.viewAllApplicationsByRecruiterId(recruiterId), HttpStatus.OK);
 	}
@@ -108,8 +101,9 @@ public class JobApplicationController {
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
 	@PutMapping(value = "/update/{id}")
-	public ResponseEntity<Object> updateJobApplicationStatus(@Valid @PathVariable Long id,
-													   @RequestBody JobApplicationDTO jobApplicationDto, BindingResult bindingResult) {
+	@ApiOperation("This endpoint is used to update the status of Job application by recruiter")
+	public ResponseEntity<Object> updateJobApplicationStatus(@Valid
+													   @RequestBody JobApplicationStatusDTO jobApplicationStatusDTO, BindingResult bindingResult, @PathVariable Long id) {
 		if (bindingResult.hasErrors()) {
 			System.out.println("Some errors exist!");
 			List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -121,7 +115,7 @@ public class JobApplicationController {
 			throw new JobPortalValidationException(errMessages);
 		}
 		try {
-			jobApplicationService.updateJobApplication(id, jobApplicationDto);
+			jobApplicationService.updateJobApplication(id, jobApplicationStatusDTO);
 			return new ResponseEntity<>("job application updated successfully", HttpStatus.OK);
 		} catch (InvalidJobApplicationException e) {
 			throw new InvalidJobApplicationException("Invalid Job Application Id");

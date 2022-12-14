@@ -10,7 +10,10 @@ public class JobDTO {
 	private long jobSeekerId = 2L;
 	@NotNull(message = "recruiterid cant be null")
 	private long recruiterId;
+
+	@NotEmpty
 	private String jobTitle;
+	@NotEmpty
 	private String jobDescription;
 	private String location;
 	private String skill;

@@ -7,28 +7,27 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 
-public class JobSeekerRegisterDTO implements register {
-    @NotEmpty(message = "firstName cannot be empty")
+public class RecruiterRegisterDTO implements register {
+
     private String firstName;
     @NotEmpty(message = "lastName cannot be empty")
     private String lastName;
-    @Email(message = "please provide proper email address")
+    @Email
     @Column(nullable = false)
     private String email;
     @Pattern(regexp="^[a-zA-Z0-9]{6,10}",message="length must be between 6 to 20")
     private String password;
+    private String companyName;
 
-    private String skill;
-
-    public JobSeekerRegisterDTO() {
+    public RecruiterRegisterDTO() {
     }
 
-    public JobSeekerRegisterDTO(String firstName, String lastName, String email, String password, String skill) {
+    public RecruiterRegisterDTO(String firstName, String lastName, String email, String password, String companyName) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.skill = skill;
+        this.companyName = companyName;
     }
 
     public String getFirstName() {
@@ -63,11 +62,11 @@ public class JobSeekerRegisterDTO implements register {
         this.password = password;
     }
 
-    public String getSkill() {
-        return skill;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setSkill(String skill) {
-        this.skill = skill;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

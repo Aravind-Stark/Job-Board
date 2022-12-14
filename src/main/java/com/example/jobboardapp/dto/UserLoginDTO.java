@@ -1,9 +1,9 @@
 package com.example.jobboardapp.dto;
 
-import com.example.jobboardapp.entities.Users;
+import com.example.jobboardapp.entities.users;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserLoginDTO implements Users {
+public class UserLoginDTO implements users {
 
     @JsonProperty("userName")
     private String email ;
