@@ -46,6 +46,12 @@ public class JobApplicationController {
 	 * @postmapping: Post mapping requests a body from the user
 	 * 				 which is then persisted onto the database.
 	 ****************************************************************************************/
+	/**
+	 * @RequestBody JobApplicationDTO
+	 * @return Response Entity of String type
+	 * Description : This method creates a new Job Application
+	 * @postmapping: Annotation for mapping HTTP POST requests onto specific handler methods.
+	 */
 
 	@PostMapping(value = "/apply")
 	public ResponseEntity<String> applyToJob(@Valid @RequestBody JobApplicationDTO jobApplicationDto,
@@ -72,18 +78,35 @@ public class JobApplicationController {
 
 
 
+	/**
+	 * @Param jobSeekerID
+	 * @return Response Entity of List<JobApplicationsListDTO>
+	 * Description : This method finds all the jobs applied by jobSeeker
+	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
+	 */
 	@GetMapping(value = "/findJobSeekersApplications/{jobSeekerID}")
 	public ResponseEntity<List<JobApplicationsListDTO>> findJobSeekersApplications(@PathVariable Long jobSeekerID) {
 		return new ResponseEntity<>(jobApplicationService.findJobSeekersApplications(jobSeekerID), HttpStatus.OK);
 	}
 
+	/**
+	 * @Param recruiterId
+	 * @return Response Entity of List<JobSeekerDetailsDTO>
+	 * Description : This method all applications for the posted jobs
+	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
+	 */
 	@GetMapping(value = "/viewAllApplicationsByRecruiterId/{recruiterId}")
 	public ResponseEntity<List<JobSeekerDetailsDTO>> viewAllApplicationsByRecruiterId(@PathVariable Long recruiterId) {
 		return new ResponseEntity<>(jobApplicationService.viewAllApplicationsByRecruiterId(recruiterId), HttpStatus.OK);
 	}
 
 
-
+	/**
+	 * @Param id,JobApplicationDTO
+	 * @return Response Entity of Object type
+	 * Description : This is method is used to update the status of Job application by recruiter
+	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
+	 */
 	@PutMapping(value = "/update/{id}")
 	public ResponseEntity<Object> updateJobApplicationStatus(@Valid @PathVariable Long id,
 													   @RequestBody JobApplicationDTO jobApplicationDto, BindingResult bindingResult) {

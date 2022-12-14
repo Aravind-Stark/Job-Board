@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.example.jobboardapp.dto.UserLoginDTO;
 import org.springframework.stereotype.Service;
 
 import com.example.jobboardapp.dto.JobSeekerDTO;
@@ -16,11 +17,13 @@ public interface IJobSeekerService {
 
 	Long getCurrentId();
 
-	JobSeeker createJobSeeker(JobSeeker jobSeeker);
+	JobSeeker createJobSeeker(JobSeeker jobSeeker) throws Exception;
 
 	JobSeeker updateJobSeeker(@Valid Long id, JobSeeker jobSeeker);
 
 	List<JobSeekerDTO> findAllJobSeeker();
 
 	List<JobSeekerDTO> searchBySkill(String skill);
+
+    String jobSeekerLogin(UserLoginDTO userLoginDTO);
 }

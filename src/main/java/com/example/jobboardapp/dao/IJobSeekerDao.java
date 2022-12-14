@@ -25,4 +25,8 @@ public interface IJobSeekerDao extends JpaRepository<JobSeeker, Long> {
 	public List<JobSeekerDTO> findAllJobSeeker();
 
     List<JobSeeker> findBySkillContainingIgnoreCase(@Param("skill") String skill);
+
+	JobSeeker findByEmail(@Param("email")String email);
+
+	JobSeeker findByPassword(@Param("password") String password);
 }
