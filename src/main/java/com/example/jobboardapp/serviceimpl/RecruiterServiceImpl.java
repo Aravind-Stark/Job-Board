@@ -1,17 +1,14 @@
 package com.example.jobboardapp.serviceimpl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.jobboardapp.dao.IRecruiterDao;
 import com.example.jobboardapp.dto.RecruiterDTO;
-import com.example.jobboardapp.dto.RecruiterListDTO;
+import com.example.jobboardapp.dto.UserLoginDTO;
 import com.example.jobboardapp.entities.Recruiter;
 import com.example.jobboardapp.exceptions.InvalidRecruiterException;
 import com.example.jobboardapp.service.IRecruiterService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
@@ -62,6 +59,16 @@ public class RecruiterServiceImpl implements IRecruiterService {
 			return recruiterDao.save(recruiter);
 		} else
 			throw new InvalidRecruiterException();
+	}
+
+	@Override
+	public String recruiterLogin(UserLoginDTO userLoginDTO) {
+		Recruiter recruiter= recruiterDao.findByEmail(userLoginDTO.getEmail());
+		if(recruiter!=null && recruiter.getEmail().equals(userLoginDTO.getEmail()) &&recruiter.getPassword().equals(userLoginDTO.getPassword()) ){
+			return "Logged in succesfully";}
+		else {
+			throw  new InvalidRecruiterException("Invalid credentials");
+		}
 	}
 
 /*

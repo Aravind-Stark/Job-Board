@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.jobboardapp.dao.IJobSeekerDao;
+import com.example.jobboardapp.dto.UserLoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,12 +44,28 @@ public class JobSeekerServiceImpl implements IJobSeekerService {
 	}
 
 	@Override
-	public JobSeeker createJobSeeker(JobSeeker jobSeeker) {
+	public JobSeeker createJobSeeker(JobSeeker jobSeeker) throws Exception {
 		if (!(jobSeeker.getFirstName() == null || jobSeeker.getLastName() == null
-				|| jobSeeker.getPassword() == null))
-			return jobSeekerDao.save(jobSeeker);
-		else
-			throw new InvalidJobSeekerException();
+				|| jobSeeker.getPassword() == null)) {
+			/*String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+			try {
+				if(fileName.contains("..")) {
+					throw  new Exception("Filename contains invalid path sequence "
+							+ fileName);
+				}*/
+
+				/*Attachment attachment
+						= new Attachment(fileName,
+						multipartFile.getContentType(),
+						multipartFile.getBytes());
+				jobSeeker.setAttachment(attachment);*/
+				return jobSeekerDao.save(jobSeeker);
+
+			/*} catch (Exception e) {
+				throw new Exception("Could not save File: " + fileName);
+			}*/
+	}
+		 throw new InvalidJobSeekerException();
 	}
 
 	@Override
@@ -82,6 +99,16 @@ public class JobSeekerServiceImpl implements IJobSeekerService {
 		}
 
 		return jobSeekerDTOS;
+	}
+
+	@Override
+	public String jobSeekerLogin(UserLoginDTO userLoginDTO) {
+		JobSeeker  jobSeeker= jobSeekerDao.findByEmail(userLoginDTO.getEmail());
+		if(jobSeeker!=null && jobSeeker.getEmail().equals(userLoginDTO.getEmail()) &&jobSeeker.getPassword().equals(userLoginDTO.getPassword()) ){
+		return "Logged in succesfully";}
+		else {
+			throw  new InvalidJobSeekerException("Invalid credentials");
+		}
 	}
 
 }

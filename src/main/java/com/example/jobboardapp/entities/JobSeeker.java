@@ -1,19 +1,13 @@
 package com.example.jobboardapp.entities;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 @Entity
-public class JobSeeker{
+public class JobSeeker implements Users {
 	@Id
 	@Column(name = "jobseeker_id", updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +26,22 @@ public class JobSeeker{
 
 	private String skill;
 
+	@OneToOne(targetEntity=Attachment.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
+			CascadeType.DETACH})
+	@JoinColumn(name = "attachment_id")
+	private Attachment attachment;
+
 	@OneToMany(mappedBy = "jobSeeker",targetEntity = JobApplication.class,cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH,
 			CascadeType.DETACH })
 	private List<JobApplication> appliedJobs;
+
+	public Attachment getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(Attachment attachment) {
+		this.attachment = attachment;
+	}
 
 
 	public JobSeeker() {
@@ -105,4 +112,6 @@ public class JobSeeker{
 	public void setSkill(String skill) {
 		this.skill = skill;
 	}
+
+
 }

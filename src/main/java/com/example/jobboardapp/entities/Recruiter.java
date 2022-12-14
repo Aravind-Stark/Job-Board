@@ -1,6 +1,5 @@
 package com.example.jobboardapp.entities;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,15 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 @Entity
-public class Recruiter {
+public class Recruiter implements Users {
 
 
 	@Id
@@ -58,6 +53,14 @@ public class Recruiter {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.postedJobs = postedJobs;
+		this.password = password;
+		this.companyName = companyName;
+	}
+
+	public Recruiter(String firstName, String lastName, String email, String password, String companyName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
 		this.password = password;
 		this.companyName = companyName;
 	}
