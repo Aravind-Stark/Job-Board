@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/job")
+@RequestMapping("/api/v1/job")
 @CrossOrigin(origins = "*")
 public class JobController {
 
@@ -145,11 +145,11 @@ public class JobController {
 	/**
 	 * @param title
 	 * @return Response Entity of Object type
-	 * Description : This method finds job based on skill from the Job table
+	 * Description : This method finds job based on title from the Job table
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
     @GetMapping(value = "/findJobsByTitle/{title}")
-    @ApiOperation("This endpoint is used to find job based on skill")
+    @ApiOperation("This endpoint is used to find job based on title")
     public ResponseEntity<List<JobListDTO>> findJobsByTitle(@PathVariable String title) {
         try {
             return new ResponseEntity<>(jobService.findJobsByTitle(title), HttpStatus.OK);

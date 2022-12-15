@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/attachment")
+@RequestMapping("/api/v1/attachment")
 @CrossOrigin(origins = "*")
 public class AttachmentController {
 

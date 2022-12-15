@@ -32,7 +32,7 @@ import com.example.jobboardapp.service.IJobApplicationService;
 
 
 @RestController
-@RequestMapping(value = "/jobApplication")
+@RequestMapping(value = "/api/v1/jobApplication")
 @CrossOrigin(origins = "*")
 public class JobApplicationController {
 

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/jobSeeker")
+@RequestMapping("/api/v1/jobSeeker")
 @CrossOrigin(origins = "*")
 public class JobSeekerController {
 
@@ -61,11 +61,11 @@ public class JobSeekerController {
 	/**
 	 * @param id
 	 * @return Response Entity of Object type
-	 * Description : This method finds job based on location from the Job table
+	 * Description : This method finds jobseeker by their Id
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
     @GetMapping("/getJobSeekerById/{id}")
-    @ApiOperation("This endpoint is used to finds job based on location")
+    @ApiOperation("This endpoint is used to finds jobseeker by their Id")
     public JobSeekerDTO getJobSeekerById(@PathVariable Long id) {
         try {
             return iJobSeekerService.getJobSeekerById(id);
@@ -133,7 +133,7 @@ public class JobSeekerController {
 	 * @PostMapping: Annotation for mapping HTTP POST requests onto specific handler methods.
 	 */
     @PostMapping("/jobSeekerLogin")
-    @ApiOperation("This endpoint is used to used to Authenticate the user")
+    @ApiOperation("This endpoint is used to used to Authenticate the jobseeker")
     public ResponseEntity<String> jobSeekerLogin(@RequestBody UserLoginDTO userLoginDTO) {
 
         return new ResponseEntity<>(iJobSeekerService.jobSeekerLogin(userLoginDTO), HttpStatus.OK);

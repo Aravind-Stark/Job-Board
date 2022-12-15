@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recruiter")
+@RequestMapping("/api/v1/recruiter")
 @CrossOrigin(origins = "*")
 public class RecruiterController {
 
@@ -106,7 +106,7 @@ public class RecruiterController {
 	 * @PostMapping: Annotation for mapping HTTP POST requests onto specific handler methods.
 	 */
     @PostMapping("/recruiterLogin")
-    @ApiOperation("This endpoint is used to Authenticate the user")
+    @ApiOperation("This endpoint is used to Authenticate the recruiter")
     public ResponseEntity<String> recruiterLogin(@RequestBody UserLoginDTO userLoginDTO) {
 
         return new ResponseEntity<>(recruiterService.recruiterLogin(userLoginDTO), HttpStatus.OK);
