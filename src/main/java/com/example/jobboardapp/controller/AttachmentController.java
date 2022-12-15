@@ -1,8 +1,8 @@
 package com.example.jobboardapp.controller;
 
 import com.example.jobboardapp.entities.Attachment;
-import com.example.jobboardapp.entities.JobSeeker;
 import com.example.jobboardapp.service.IAttachementService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/attachment")
+@RequestMapping("/api/v1/attachment")
 @CrossOrigin(origins = "*")
 public class AttachmentController {
 
@@ -31,7 +31,8 @@ public class AttachmentController {
      *
      */
     @PostMapping("/uploadResume/{id}")
-    public ResponseEntity<Object> uploadResume(@RequestParam("file") MultipartFile multipartFile,
+    @ApiOperation("This endpoint is used to uploads user resume")
+    public ResponseEntity<Object> uploadResume(@RequestPart("file") MultipartFile multipartFile,
                                                @PathVariable Long id
     ) throws Exception {
         Attachment attachment = attachementService.uploadResume(multipartFile, id);
@@ -48,6 +49,7 @@ public class AttachmentController {
      *
      */
     @PostMapping("/updateResume/{id}")
+    @ApiOperation("This endpoint is used to updates user resume by reuploading")
     public ResponseEntity<Object> updateResume(@RequestParam("file") MultipartFile multipartFile,
                                                @PathVariable Long id
     ) throws Exception {
@@ -65,6 +67,7 @@ public class AttachmentController {
      *
      */
     @GetMapping("/download/{jobSeekerID}")
+    @ApiOperation("This endpoint is used to downloads resume using jobseeker id")
     public ResponseEntity<Resource> downloadFile(@PathVariable Long jobSeekerID) throws Exception {
         Attachment attachment = null;
         attachment = attachementService.getAttachment(jobSeekerID);
@@ -85,6 +88,7 @@ public class AttachmentController {
      *
      */
     @DeleteMapping("/deleteResume/{id}")
+    @ApiOperation("This endpoint is used to find resume using jobseeker id")
     public ResponseEntity<Object> deleteResume(@PathVariable Long id) throws Exception {
         attachementService.deleteResume(id);
 

@@ -2,6 +2,7 @@ package com.example.jobboardapp.service;
 
 import java.util.List;
 
+import com.example.jobboardapp.dto.JobApplicationStatusDTO;
 import com.example.jobboardapp.dto.JobSeekerDetailsDTO;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ public interface IJobApplicationService {
 
 	JobApplication applyToJob(JobApplicationDTO jobApplicationDto);
 
-	JobApplication updateJobApplication(Long id,JobApplicationDTO jobApplicationDto);
+	JobApplication updateJobApplication(Long id, JobApplicationStatusDTO jobApplicationStatusDTO);
 
 
 	List<JobApplicationsListDTO> findJobSeekersApplications( Long jobSeekerID);

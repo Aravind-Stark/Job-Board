@@ -392,80 +392,6 @@ class JobServiceImplTest {
     }
 
     /**
-     * Method under test: {@link JobServiceImpl#findJobsBySkill(String)}
-     */
-    @Test
-    void testFindJobsBySkill4() {
-        Recruiter recruiter = new Recruiter();
-        recruiter.setCompanyName("Company Name");
-        recruiter.setEmail("jane.doe@example.org");
-        recruiter.setFirstName("Jane");
-        recruiter.setId(123L);
-        recruiter.setJobApplications(new ArrayList<>());
-        recruiter.setLastName("Doe");
-        recruiter.setPassword("iloveyou");
-        recruiter.setPostedJobs(new ArrayList<>());
-
-        Recruiter recruiter1 = new Recruiter();
-        recruiter1.setCompanyName("Company Name");
-        recruiter1.setEmail("jane.doe@example.org");
-        recruiter1.setFirstName("Jane");
-        recruiter1.setId(123L);
-        recruiter1.setJobApplications(new ArrayList<>());
-        recruiter1.setLastName("Doe");
-        recruiter1.setPassword("iloveyou");
-        recruiter1.setPostedJobs(new ArrayList<>());
-        Job job = mock(Job.class);
-        when(job.getPostedBy()).thenReturn(recruiter1);
-        when(job.getId()).thenReturn(123L);
-        when(job.getJobDescription()).thenReturn("Job Description");
-        when(job.getJobTitle()).thenReturn("Dr");
-        when(job.getLocation()).thenReturn("Location");
-        when(job.getSkill()).thenReturn("Skill");
-        when(job.getPostedDate()).thenReturn(LocalDateTime.of(1, 1, 1, 1, 1));
-        doNothing().when(job).setCompanyName((String) any());
-        doNothing().when(job).setId((Long) any());
-        doNothing().when(job).setJobApplications((List<JobApplication>) any());
-        doNothing().when(job).setJobDescription((String) any());
-        doNothing().when(job).setJobTitle((String) any());
-        doNothing().when(job).setLocation((String) any());
-        doNothing().when(job).setPostedBy((Recruiter) any());
-        doNothing().when(job).setPostedDate((LocalDateTime) any());
-        doNothing().when(job).setSkill((String) any());
-        job.setCompanyName("Company Name");
-        job.setId(123L);
-        job.setJobApplications(new ArrayList<>());
-        job.setJobDescription("Job Description");
-        job.setJobTitle("Dr");
-        job.setLocation("Location");
-        job.setPostedBy(recruiter);
-        job.setPostedDate(LocalDateTime.of(1, 1, 1, 1, 1));
-        job.setSkill("Skill");
-
-        ArrayList<Job> jobList = new ArrayList<>();
-        jobList.add(job);
-        when(iJobDao.findBySkillContainingIgnoreCase((String) any())).thenReturn(jobList);
-        assertEquals(1, jobServiceImpl.findJobsBySkill("Name").size());
-        verify(iJobDao).findBySkillContainingIgnoreCase((String) any());
-        verify(job).getPostedBy();
-        verify(job).getId();
-        verify(job).getJobDescription();
-        verify(job).getJobTitle();
-        verify(job).getLocation();
-        verify(job).getSkill();
-        verify(job).getPostedDate();
-        verify(job).setCompanyName((String) any());
-        verify(job).setId((Long) any());
-        verify(job).setJobApplications((List<JobApplication>) any());
-        verify(job).setJobDescription((String) any());
-        verify(job).setJobTitle((String) any());
-        verify(job).setLocation((String) any());
-        verify(job).setPostedBy((Recruiter) any());
-        verify(job).setPostedDate((LocalDateTime) any());
-        verify(job).setSkill((String) any());
-    }
-
-    /**
      * Method under test: {@link JobServiceImpl#postJob(JobDTO)}
      */
     @Test
@@ -547,7 +473,7 @@ class JobServiceImplTest {
         //   test threw
         //   java.util.NoSuchElementException: No value present
         //       at java.util.Optional.get(Optional.java:148)
-        //       at com.example.jobboardapp.serviceimpl.JobServiceImpl.postJob(JobServiceImpl.java:78)
+        //       at com.example.jobboardapp.serviceimpl.JobServiceImpl.postJob(JobServiceImpl.java:79)
         //   See https://diff.blue/R013 to resolve this issue.
 
         Recruiter recruiter = new Recruiter();
@@ -630,7 +556,7 @@ class JobServiceImplTest {
         //   Diffblue Cover tried to run the arrange/act section, but the method under
         //   test threw
         //   java.lang.NullPointerException
-        //       at com.example.jobboardapp.serviceimpl.JobServiceImpl.postJob(JobServiceImpl.java:77)
+        //       at com.example.jobboardapp.serviceimpl.JobServiceImpl.postJob(JobServiceImpl.java:78)
         //   See https://diff.blue/R013 to resolve this issue.
 
         Recruiter recruiter = new Recruiter();
@@ -727,6 +653,11 @@ class JobServiceImplTest {
         verify(jobDTO).getPostedDate();
         verify(jobDTO, atLeast(1)).getRecruiterId();
     }
+
+    /**
+     * Method under test: {@link JobServiceImpl#findJobsBySkill(String)}
+     */
+
 
     /**
      * Method under test: {@link JobServiceImpl#findAll()}
@@ -1078,6 +1009,233 @@ class JobServiceImplTest {
         when(iJobDao.saveAndFlush((Job) any())).thenReturn(job1);
         when(iJobDao.findById((Long) any())).thenReturn(ofResult);
         jobServiceImpl.awardJob(123L, 123L);
+    }
+
+    /**
+     * Method under test: {@link JobServiceImpl#updateJob(JobDTO, Long)}
+     */
+    @Test
+    void testUpdateJob() {
+        Recruiter recruiter = new Recruiter();
+        recruiter.setCompanyName("Company Name");
+        recruiter.setEmail("jane.doe@example.org");
+        recruiter.setFirstName("Jane");
+        recruiter.setId(123L);
+        recruiter.setJobApplications(new ArrayList<>());
+        recruiter.setLastName("Doe");
+        recruiter.setPassword("iloveyou");
+        recruiter.setPostedJobs(new ArrayList<>());
+
+        Job job = new Job();
+        job.setCompanyName("Company Name");
+        job.setId(123L);
+        job.setJobApplications(new ArrayList<>());
+        job.setJobDescription("Job Description");
+        job.setJobTitle("Dr");
+        job.setLocation("Location");
+        job.setPostedBy(recruiter);
+        job.setPostedDate(LocalDateTime.of(1, 1, 1, 1, 1));
+        job.setSkill("Skill");
+        Optional<Job> ofResult = Optional.of(job);
+
+        Recruiter recruiter1 = new Recruiter();
+        recruiter1.setCompanyName("Company Name");
+        recruiter1.setEmail("jane.doe@example.org");
+        recruiter1.setFirstName("Jane");
+        recruiter1.setId(123L);
+        recruiter1.setJobApplications(new ArrayList<>());
+        recruiter1.setLastName("Doe");
+        recruiter1.setPassword("iloveyou");
+        recruiter1.setPostedJobs(new ArrayList<>());
+
+        Job job1 = new Job();
+        job1.setCompanyName("Company Name");
+        job1.setId(123L);
+        job1.setJobApplications(new ArrayList<>());
+        job1.setJobDescription("Job Description");
+        job1.setJobTitle("Dr");
+        job1.setLocation("Location");
+        job1.setPostedBy(recruiter1);
+        job1.setPostedDate(LocalDateTime.of(1, 1, 1, 1, 1));
+        job1.setSkill("Skill");
+        when(iJobDao.save((Job) any())).thenReturn(job1);
+        when(iJobDao.existsById((Long) any())).thenReturn(true);
+        when(iJobDao.findById((Long) any())).thenReturn(ofResult);
+        when(iRecruiterDao.existsById((Long) any())).thenReturn(true);
+        assertSame(job1, jobServiceImpl.updateJob(new JobDTO(), 123L));
+        verify(iJobDao).existsById((Long) any());
+        verify(iJobDao).save((Job) any());
+        verify(iJobDao).findById((Long) any());
+        verify(iRecruiterDao).existsById((Long) any());
+    }
+
+    /**
+     * Method under test: {@link JobServiceImpl#updateJob(JobDTO, Long)}
+     */
+    @Test
+    void testUpdateJob2() {
+        Recruiter recruiter = new Recruiter();
+        recruiter.setCompanyName("Company Name");
+        recruiter.setEmail("jane.doe@example.org");
+        recruiter.setFirstName("Jane");
+        recruiter.setId(123L);
+        recruiter.setJobApplications(new ArrayList<>());
+        recruiter.setLastName("Doe");
+        recruiter.setPassword("iloveyou");
+        recruiter.setPostedJobs(new ArrayList<>());
+
+        Job job = new Job();
+        job.setCompanyName("Company Name");
+        job.setId(123L);
+        job.setJobApplications(new ArrayList<>());
+        job.setJobDescription("Job Description");
+        job.setJobTitle("Dr");
+        job.setLocation("Location");
+        job.setPostedBy(recruiter);
+        job.setPostedDate(LocalDateTime.of(1, 1, 1, 1, 1));
+        job.setSkill("Skill");
+        Optional<Job> ofResult = Optional.of(job);
+        when(iJobDao.save((Job) any())).thenThrow(new InvalidJobException("An error occurred"));
+        when(iJobDao.existsById((Long) any())).thenReturn(true);
+        when(iJobDao.findById((Long) any())).thenReturn(ofResult);
+        when(iRecruiterDao.existsById((Long) any())).thenReturn(true);
+        assertThrows(InvalidJobException.class, () -> jobServiceImpl.updateJob(new JobDTO(), 123L));
+        verify(iJobDao).existsById((Long) any());
+        verify(iJobDao).save((Job) any());
+        verify(iJobDao).findById((Long) any());
+        verify(iRecruiterDao).existsById((Long) any());
+    }
+
+    /**
+     * Method under test: {@link JobServiceImpl#updateJob(JobDTO, Long)}
+     */
+    @Test
+    void testUpdateJob3() {
+        Recruiter recruiter = new Recruiter();
+        recruiter.setCompanyName("Company Name");
+        recruiter.setEmail("jane.doe@example.org");
+        recruiter.setFirstName("Jane");
+        recruiter.setId(123L);
+        recruiter.setJobApplications(new ArrayList<>());
+        recruiter.setLastName("Doe");
+        recruiter.setPassword("iloveyou");
+        recruiter.setPostedJobs(new ArrayList<>());
+
+        Job job = new Job();
+        job.setCompanyName("Company Name");
+        job.setId(123L);
+        job.setJobApplications(new ArrayList<>());
+        job.setJobDescription("Job Description");
+        job.setJobTitle("Dr");
+        job.setLocation("Location");
+        job.setPostedBy(recruiter);
+        job.setPostedDate(LocalDateTime.of(1, 1, 1, 1, 1));
+        job.setSkill("Skill");
+        Optional<Job> ofResult = Optional.of(job);
+
+        Recruiter recruiter1 = new Recruiter();
+        recruiter1.setCompanyName("Company Name");
+        recruiter1.setEmail("jane.doe@example.org");
+        recruiter1.setFirstName("Jane");
+        recruiter1.setId(123L);
+        recruiter1.setJobApplications(new ArrayList<>());
+        recruiter1.setLastName("Doe");
+        recruiter1.setPassword("iloveyou");
+        recruiter1.setPostedJobs(new ArrayList<>());
+
+        Job job1 = new Job();
+        job1.setCompanyName("Company Name");
+        job1.setId(123L);
+        job1.setJobApplications(new ArrayList<>());
+        job1.setJobDescription("Job Description");
+        job1.setJobTitle("Dr");
+        job1.setLocation("Location");
+        job1.setPostedBy(recruiter1);
+        job1.setPostedDate(LocalDateTime.of(1, 1, 1, 1, 1));
+        job1.setSkill("Skill");
+        when(iJobDao.save((Job) any())).thenReturn(job1);
+        when(iJobDao.existsById((Long) any())).thenReturn(false);
+        when(iJobDao.findById((Long) any())).thenReturn(ofResult);
+        when(iRecruiterDao.existsById((Long) any())).thenReturn(true);
+        assertThrows(InvalidJobException.class, () -> jobServiceImpl.updateJob(new JobDTO(), 123L));
+        verify(iJobDao).existsById((Long) any());
+        verify(iJobDao).findById((Long) any());
+        verify(iRecruiterDao).existsById((Long) any());
+    }
+
+    /**
+     * Method under test: {@link JobServiceImpl#updateJob(JobDTO, Long)}
+     */
+    @Test
+    void testUpdateJob4() {
+        Recruiter recruiter = new Recruiter();
+        recruiter.setCompanyName("Company Name");
+        recruiter.setEmail("jane.doe@example.org");
+        recruiter.setFirstName("Jane");
+        recruiter.setId(123L);
+        recruiter.setJobApplications(new ArrayList<>());
+        recruiter.setLastName("Doe");
+        recruiter.setPassword("iloveyou");
+        recruiter.setPostedJobs(new ArrayList<>());
+        Job job = mock(Job.class);
+        doNothing().when(job).setCompanyName((String) any());
+        doNothing().when(job).setId((Long) any());
+        doNothing().when(job).setJobApplications((List<JobApplication>) any());
+        doNothing().when(job).setJobDescription((String) any());
+        doNothing().when(job).setJobTitle((String) any());
+        doNothing().when(job).setLocation((String) any());
+        doNothing().when(job).setPostedBy((Recruiter) any());
+        doNothing().when(job).setPostedDate((LocalDateTime) any());
+        doNothing().when(job).setSkill((String) any());
+        job.setCompanyName("Company Name");
+        job.setId(123L);
+        job.setJobApplications(new ArrayList<>());
+        job.setJobDescription("Job Description");
+        job.setJobTitle("Dr");
+        job.setLocation("Location");
+        job.setPostedBy(recruiter);
+        job.setPostedDate(LocalDateTime.of(1, 1, 1, 1, 1));
+        job.setSkill("Skill");
+        Optional<Job> ofResult = Optional.of(job);
+
+        Recruiter recruiter1 = new Recruiter();
+        recruiter1.setCompanyName("Company Name");
+        recruiter1.setEmail("jane.doe@example.org");
+        recruiter1.setFirstName("Jane");
+        recruiter1.setId(123L);
+        recruiter1.setJobApplications(new ArrayList<>());
+        recruiter1.setLastName("Doe");
+        recruiter1.setPassword("iloveyou");
+        recruiter1.setPostedJobs(new ArrayList<>());
+
+        Job job1 = new Job();
+        job1.setCompanyName("Company Name");
+        job1.setId(123L);
+        job1.setJobApplications(new ArrayList<>());
+        job1.setJobDescription("Job Description");
+        job1.setJobTitle("Dr");
+        job1.setLocation("Location");
+        job1.setPostedBy(recruiter1);
+        job1.setPostedDate(LocalDateTime.of(1, 1, 1, 1, 1));
+        job1.setSkill("Skill");
+        when(iJobDao.save((Job) any())).thenReturn(job1);
+        when(iJobDao.existsById((Long) any())).thenReturn(true);
+        when(iJobDao.findById((Long) any())).thenReturn(ofResult);
+        when(iRecruiterDao.existsById((Long) any())).thenReturn(true);
+        assertSame(job1, jobServiceImpl.updateJob(new JobDTO(), 123L));
+        verify(iJobDao).existsById((Long) any());
+        verify(iJobDao).save((Job) any());
+        verify(iJobDao).findById((Long) any());
+        verify(job, atLeast(1)).setCompanyName((String) any());
+        verify(job).setId((Long) any());
+        verify(job).setJobApplications((List<JobApplication>) any());
+        verify(job, atLeast(1)).setJobDescription((String) any());
+        verify(job, atLeast(1)).setJobTitle((String) any());
+        verify(job, atLeast(1)).setLocation((String) any());
+        verify(job).setPostedBy((Recruiter) any());
+        verify(job).setPostedDate((LocalDateTime) any());
+        verify(job, atLeast(1)).setSkill((String) any());
+        verify(iRecruiterDao).existsById((Long) any());
     }
 
     /**

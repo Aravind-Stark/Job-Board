@@ -2,6 +2,7 @@ package com.example.jobboardapp.serviceimpl;
 
 import com.example.jobboardapp.dao.IRecruiterDao;
 import com.example.jobboardapp.dto.RecruiterDTO;
+import com.example.jobboardapp.dto.RecruiterRegisterDTO;
 import com.example.jobboardapp.dto.UserLoginDTO;
 import com.example.jobboardapp.entities.Recruiter;
 import com.example.jobboardapp.exceptions.InvalidRecruiterException;
@@ -29,6 +30,7 @@ public class RecruiterServiceImpl implements IRecruiterService {
 		recruiterDTO.setFirstName(recruiter.getFirstName());
 		recruiterDTO.setLastName(recruiter.getLastName());
 		recruiterDTO.setEmail(recruiter.getEmail());
+		recruiterDTO.setCompanyName(recruiter.getCompanyName());
 		return recruiterDTO;
 
 	}
@@ -45,20 +47,33 @@ public class RecruiterServiceImpl implements IRecruiterService {
 	}
 
 	@Override
-	public Recruiter save(Recruiter recruiter) {
-		if (!(recruiter.getFirstName() == null || recruiter.getLastName() == null
-				|| recruiter.getEmail() == null || recruiter.getPassword() == null))
+	public Recruiter save(RecruiterRegisterDTO recruiterRegisterDTO) {
+		if (!(recruiterRegisterDTO.getFirstName() == null || recruiterRegisterDTO.getLastName() == null
+				|| recruiterRegisterDTO.getEmail() == null || recruiterRegisterDTO.getPassword() == null)) {
+			Recruiter recruiter = new Recruiter();
+            recruiter.setFirstName(recruiterRegisterDTO.getFirstName());
+			recruiter.setLastName(recruiterRegisterDTO.getLastName());
+			recruiter.setEmail(recruiterRegisterDTO.getEmail());
+			recruiter.setPassword(recruiterRegisterDTO.getPassword());
+			recruiter.setCompanyName(recruiterRegisterDTO.getCompanyName());
 			return recruiterDao.save(recruiter);
+		}
 		else
 			throw new InvalidRecruiterException();
 	}
 
 	@Override
-	public Recruiter update(Long id, Recruiter recruiter) {
+	public Recruiter update(Long id, RecruiterRegisterDTO recruiterRegisterDTO) {
 		if (recruiterDao.existsById(id)) {
+			Recruiter recruiter = new Recruiter();
+			recruiter.setFirstName(recruiterRegisterDTO.getFirstName());
+			recruiter.setLastName(recruiterRegisterDTO.getLastName());
+			recruiter.setEmail(recruiterRegisterDTO.getEmail());
+			recruiter.setPassword(recruiterRegisterDTO.getPassword());
+			recruiter.setCompanyName(recruiterRegisterDTO.getCompanyName());
 			return recruiterDao.save(recruiter);
 		} else
-			throw new InvalidRecruiterException();
+			throw new InvalidRecruiterException("Invalid recruiter id");
 	}
 
 	@Override

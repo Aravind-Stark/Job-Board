@@ -4,6 +4,8 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 import com.example.jobboardapp.dto.JobSeekerDTO;
+import com.example.jobboardapp.dto.JobSeekerRegisterDTO;
+import com.example.jobboardapp.dto.UserLoginDTO;
 import com.example.jobboardapp.entities.Attachment;
 import com.example.jobboardapp.entities.JobSeeker;
 import com.example.jobboardapp.service.IJobSeekerService;
@@ -23,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
 
 @ContextConfiguration(classes = {JobSeekerController.class})
 @ExtendWith(SpringExtension.class)
@@ -34,7 +37,7 @@ class JobSeekerControllerTest {
     private JobSeekerController jobSeekerController;
 
     /**
-     * Method under test: {@link JobSeekerController#createJobSeeker(JobSeeker)}
+     * Method under test: {@link JobSeekerController#createJobSeeker(JobSeekerRegisterDTO, BindingResult)}
      */
     @Test
     void testCreateJobSeeker() throws Exception {
@@ -81,53 +84,16 @@ class JobSeekerControllerTest {
         jobSeeker2.setLastName("Doe");
         jobSeeker2.setPassword("iloveyou");
         jobSeeker2.setSkill("Skill");
-        when(iJobSeekerService.createJobSeeker((JobSeeker) any())).thenReturn(jobSeeker2);
+        when(iJobSeekerService.createJobSeeker((JobSeekerRegisterDTO) any())).thenReturn(jobSeeker2);
 
-        JobSeeker jobSeeker3 = new JobSeeker();
-        jobSeeker3.setAppliedJobs(new ArrayList<>());
-        jobSeeker3.setAttachment(new Attachment());
-        jobSeeker3.setEmail("jane.doe@example.org");
-        jobSeeker3.setFirstName("Jane");
-        jobSeeker3.setId(123L);
-        jobSeeker3.setLastName("Doe");
-        jobSeeker3.setPassword("iloveyou");
-        jobSeeker3.setSkill("Skill");
-
-        Attachment attachment2 = new Attachment();
-        attachment2.setData("AAAAAAAA".getBytes("UTF-8"));
-        attachment2.setFileName("foo.txt");
-        attachment2.setFileType("File Type");
-        attachment2.setId("42");
-        attachment2.setJobSeeker(jobSeeker3);
-
-        JobSeeker jobSeeker4 = new JobSeeker();
-        jobSeeker4.setAppliedJobs(new ArrayList<>());
-        jobSeeker4.setAttachment(attachment2);
-        jobSeeker4.setEmail("jane.doe@example.org");
-        jobSeeker4.setFirstName("Jane");
-        jobSeeker4.setId(123L);
-        jobSeeker4.setLastName("Doe");
-        jobSeeker4.setPassword("iloveyou");
-        jobSeeker4.setSkill("Skill");
-
-        Attachment attachment3 = new Attachment();
-        attachment3.setData("AAAAAAAA".getBytes("UTF-8"));
-        attachment3.setFileName("foo.txt");
-        attachment3.setFileType("File Type");
-        attachment3.setId("42");
-        attachment3.setJobSeeker(jobSeeker4);
-
-        JobSeeker jobSeeker5 = new JobSeeker();
-        jobSeeker5.setAppliedJobs(new ArrayList<>());
-        jobSeeker5.setAttachment(attachment3);
-        jobSeeker5.setEmail("jane.doe@example.org");
-        jobSeeker5.setFirstName("Jane");
-        jobSeeker5.setId(123L);
-        jobSeeker5.setLastName("Doe");
-        jobSeeker5.setPassword("iloveyou");
-        jobSeeker5.setSkill("Skill");
-        String content = (new ObjectMapper()).writeValueAsString(jobSeeker5);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/jobSeeker/createJobSeeker")
+        JobSeekerRegisterDTO jobSeekerRegisterDTO = new JobSeekerRegisterDTO();
+        jobSeekerRegisterDTO.setEmail("jane.doe@example.org");
+        jobSeekerRegisterDTO.setFirstName("Jane");
+        jobSeekerRegisterDTO.setLastName("Doe");
+        jobSeekerRegisterDTO.setPassword("iloveyou");
+        jobSeekerRegisterDTO.setSkill("Skill");
+        String content = (new ObjectMapper()).writeValueAsString(jobSeekerRegisterDTO);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/jobSeeker/createJobSeeker")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(jobSeekerController)
@@ -144,8 +110,8 @@ class JobSeekerControllerTest {
     @Test
     void testGetJobSeekerById() throws Exception {
         when(iJobSeekerService.getJobSeekerById((Long) any())).thenReturn(new JobSeekerDTO());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/jobSeeker/getJobSeekerById/{id}",
-                123L);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/api/v1/jobSeeker/getJobSeekerById/{id}", 123L);
         MockMvcBuilders.standaloneSetup(jobSeekerController)
                 .build()
                 .perform(requestBuilder)
@@ -156,7 +122,7 @@ class JobSeekerControllerTest {
     }
 
     /**
-     * Method under test: {@link JobSeekerController#updateJobSeeker(Long, JobSeeker)}
+     * Method under test: {@link JobSeekerController#updateJobSeeker(JobSeekerRegisterDTO, BindingResult, Long)}
      */
     @Test
     void testUpdateJobSeeker() throws Exception {
@@ -203,53 +169,17 @@ class JobSeekerControllerTest {
         jobSeeker2.setLastName("Doe");
         jobSeeker2.setPassword("iloveyou");
         jobSeeker2.setSkill("Skill");
-        when(iJobSeekerService.updateJobSeeker((Long) any(), (JobSeeker) any())).thenReturn(jobSeeker2);
+        when(iJobSeekerService.updateJobSeeker((Long) any(), (JobSeekerRegisterDTO) any())).thenReturn(jobSeeker2);
 
-        JobSeeker jobSeeker3 = new JobSeeker();
-        jobSeeker3.setAppliedJobs(new ArrayList<>());
-        jobSeeker3.setAttachment(new Attachment());
-        jobSeeker3.setEmail("jane.doe@example.org");
-        jobSeeker3.setFirstName("Jane");
-        jobSeeker3.setId(123L);
-        jobSeeker3.setLastName("Doe");
-        jobSeeker3.setPassword("iloveyou");
-        jobSeeker3.setSkill("Skill");
-
-        Attachment attachment2 = new Attachment();
-        attachment2.setData("AAAAAAAA".getBytes("UTF-8"));
-        attachment2.setFileName("foo.txt");
-        attachment2.setFileType("File Type");
-        attachment2.setId("42");
-        attachment2.setJobSeeker(jobSeeker3);
-
-        JobSeeker jobSeeker4 = new JobSeeker();
-        jobSeeker4.setAppliedJobs(new ArrayList<>());
-        jobSeeker4.setAttachment(attachment2);
-        jobSeeker4.setEmail("jane.doe@example.org");
-        jobSeeker4.setFirstName("Jane");
-        jobSeeker4.setId(123L);
-        jobSeeker4.setLastName("Doe");
-        jobSeeker4.setPassword("iloveyou");
-        jobSeeker4.setSkill("Skill");
-
-        Attachment attachment3 = new Attachment();
-        attachment3.setData("AAAAAAAA".getBytes("UTF-8"));
-        attachment3.setFileName("foo.txt");
-        attachment3.setFileType("File Type");
-        attachment3.setId("42");
-        attachment3.setJobSeeker(jobSeeker4);
-
-        JobSeeker jobSeeker5 = new JobSeeker();
-        jobSeeker5.setAppliedJobs(new ArrayList<>());
-        jobSeeker5.setAttachment(attachment3);
-        jobSeeker5.setEmail("jane.doe@example.org");
-        jobSeeker5.setFirstName("Jane");
-        jobSeeker5.setId(123L);
-        jobSeeker5.setLastName("Doe");
-        jobSeeker5.setPassword("iloveyou");
-        jobSeeker5.setSkill("Skill");
-        String content = (new ObjectMapper()).writeValueAsString(jobSeeker5);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/jobSeeker/updateJobSeeker/{id}", 123L)
+        JobSeekerRegisterDTO jobSeekerRegisterDTO = new JobSeekerRegisterDTO();
+        jobSeekerRegisterDTO.setEmail("jane.doe@example.org");
+        jobSeekerRegisterDTO.setFirstName("Jane");
+        jobSeekerRegisterDTO.setLastName("Doe");
+        jobSeekerRegisterDTO.setPassword("iloveyou");
+        jobSeekerRegisterDTO.setSkill("Skill");
+        String content = (new ObjectMapper()).writeValueAsString(jobSeekerRegisterDTO);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .put("/api/v1/jobSeeker/updateJobSeeker/{id}", 123L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(jobSeekerController)
@@ -257,7 +187,7 @@ class JobSeekerControllerTest {
                 .perform(requestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
-                .andExpect(MockMvcResultMatchers.content().string("Updated Freelancer Successfully"));
+                .andExpect(MockMvcResultMatchers.content().string("Updated JobSeeker Successfully"));
     }
 
     /**
@@ -266,8 +196,8 @@ class JobSeekerControllerTest {
     @Test
     void testSearchBySkill() throws Exception {
         when(iJobSeekerService.searchBySkill((String) any())).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/jobSeeker/searchBySkill/{skill}",
-                "Skill");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/api/v1/jobSeeker/searchBySkill/{skill}", "Skill");
         MockMvcBuilders.standaloneSetup(jobSeekerController)
                 .build()
                 .perform(requestBuilder)
@@ -277,12 +207,34 @@ class JobSeekerControllerTest {
     }
 
     /**
+     * Method under test: {@link JobSeekerController#jobSeekerLogin(UserLoginDTO)}
+     */
+    @Test
+    void testJobSeekerLogin() throws Exception {
+        when(iJobSeekerService.jobSeekerLogin((UserLoginDTO) any())).thenReturn("Job Seeker Login");
+
+        UserLoginDTO userLoginDTO = new UserLoginDTO();
+        userLoginDTO.setEmail("jane.doe@example.org");
+        userLoginDTO.setPassword("iloveyou");
+        String content = (new ObjectMapper()).writeValueAsString(userLoginDTO);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/jobSeeker/jobSeekerLogin")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        MockMvcBuilders.standaloneSetup(jobSeekerController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
+                .andExpect(MockMvcResultMatchers.content().string("Job Seeker Login"));
+    }
+
+    /**
      * Method under test: {@link JobSeekerController#listAllJobSeeker()}
      */
     @Test
     void testListAllJobSeeker() throws Exception {
         when(iJobSeekerService.findAllJobSeeker()).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/jobSeeker/listAllJobSeeker");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/jobSeeker/listAllJobSeeker");
         MockMvcBuilders.standaloneSetup(jobSeekerController)
                 .build()
                 .perform(requestBuilder)

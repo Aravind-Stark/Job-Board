@@ -67,7 +67,6 @@ class JobControllerTest {
         JobDTO jobDTO = new JobDTO();
         jobDTO.setCompanyName("Company Name");
         jobDTO.setJobDescription("Job Description");
-        jobDTO.setJobId(123L);
         jobDTO.setJobSeekerId(123L);
         jobDTO.setJobTitle("Dr");
         jobDTO.setLocation("Location");
@@ -75,7 +74,7 @@ class JobControllerTest {
         jobDTO.setRecruiterId(123L);
         jobDTO.setSkill("Skill");
         String content = (new ObjectMapper()).writeValueAsString(jobDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/job/postJob")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/job/postJob")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(jobController)
@@ -87,7 +86,7 @@ class JobControllerTest {
     }
 
     /**
-     * Method under test: {@link JobController#updateJob(JobDTO, BindingResult)}
+     * Method under test: {@link JobController#updateJob(JobDTO, BindingResult, Long)}
      */
     @Test
     void testUpdateJob2() throws Exception {
@@ -111,12 +110,11 @@ class JobControllerTest {
         job.setPostedBy(recruiter);
         job.setPostedDate(LocalDateTime.of(1, 1, 1, 1, 1));
         job.setSkill("Skill");
-        when(iJobService.updateJob((JobDTO) any())).thenReturn(job);
+        when(iJobService.updateJob((JobDTO) any(), (Long) any())).thenReturn(job);
 
         JobDTO jobDTO = new JobDTO();
         jobDTO.setCompanyName("Company Name");
         jobDTO.setJobDescription("Job Description");
-        jobDTO.setJobId(123L);
         jobDTO.setJobSeekerId(123L);
         jobDTO.setJobTitle("Dr");
         jobDTO.setLocation("Location");
@@ -124,7 +122,7 @@ class JobControllerTest {
         jobDTO.setRecruiterId(123L);
         jobDTO.setSkill("Skill");
         String content = (new ObjectMapper()).writeValueAsString(jobDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/job/updateJob")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/job/updateJob/{id}", 123L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(jobController)
@@ -141,7 +139,7 @@ class JobControllerTest {
     @Test
     void testDeleteJob() throws Exception {
         doNothing().when(iJobService).deleteJob((Long) any());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/job/deleteJob/{id}", 123L);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/job/deleteJob/{id}", 123L);
         MockMvcBuilders.standaloneSetup(jobController)
                 .build()
                 .perform(requestBuilder)
@@ -156,7 +154,8 @@ class JobControllerTest {
     @Test
     void testFindByRecruiterId() throws Exception {
         when(iJobService.findByRecruiterId((Long) any())).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/job/findByRecruiterId/{id}", 123L);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/job/findByRecruiterId/{id}",
+                123L);
         MockMvcBuilders.standaloneSetup(jobController)
                 .build()
                 .perform(requestBuilder)
@@ -171,7 +170,8 @@ class JobControllerTest {
     @Test
     void testFindJobsBySkill() throws Exception {
         when(iJobService.findJobsBySkill((String) any())).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/job/findJobsBySkill/{name}", "Name");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/job/findJobsBySkill/{skill}",
+                "Skill");
         MockMvcBuilders.standaloneSetup(jobController)
                 .build()
                 .perform(requestBuilder)
@@ -186,7 +186,8 @@ class JobControllerTest {
     @Test
     void testFindJobsByTitle() throws Exception {
         when(iJobService.findJobsByTitle((String) any())).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/job/findJobsByTitle/{title}", "Dr");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/job/findJobsByTitle/{title}",
+                "Dr");
         MockMvcBuilders.standaloneSetup(jobController)
                 .build()
                 .perform(requestBuilder)
@@ -201,8 +202,8 @@ class JobControllerTest {
     @Test
     void testFindJobsByLocation() throws Exception {
         when(iJobService.findJobsByLocation((String) any())).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/job/findJobsByLocation/{location}",
-                "Location");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/api/v1/job/findJobsByLocation/{location}", "Location");
         MockMvcBuilders.standaloneSetup(jobController)
                 .build()
                 .perform(requestBuilder)
@@ -217,7 +218,7 @@ class JobControllerTest {
     @Test
     void testFindAllJobs() throws Exception {
         when(iJobService.findAll()).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/job/findAllJobs");
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/job/findAllJobs");
         MockMvcBuilders.standaloneSetup(jobController)
                 .build()
                 .perform(requestBuilder)
@@ -234,7 +235,6 @@ class JobControllerTest {
         JobDTO jobDTO = new JobDTO();
         jobDTO.setCompanyName("Company Name");
         jobDTO.setJobDescription("Job Description");
-        jobDTO.setJobId(123L);
         jobDTO.setJobSeekerId(123L);
         jobDTO.setJobTitle("Dr");
         jobDTO.setLocation("Location");
@@ -242,7 +242,7 @@ class JobControllerTest {
         jobDTO.setRecruiterId(123L);
         jobDTO.setSkill("Skill");
         String content = (new ObjectMapper()).writeValueAsString(jobDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/job/postJob")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/job/postJob")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(jobController)
@@ -252,14 +252,42 @@ class JobControllerTest {
     }
 
     /**
-     * Method under test: {@link JobController#updateJob(JobDTO, BindingResult)}
+     * Method under test: {@link JobController#sayHelloBro()}
+     */
+    @Test
+    void testSayHelloBro() throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/v1/job/hello");
+        MockMvcBuilders.standaloneSetup(jobController)
+                .build()
+                .perform(requestBuilder)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
+                .andExpect(MockMvcResultMatchers.content().string("Hello bro"));
+    }
+
+    /**
+     * Method under test: {@link JobController#sayHelloBro()}
+     */
+    @Test
+    void testSayHelloBro2() throws Exception {
+        MockHttpServletRequestBuilder getResult = MockMvcRequestBuilders.get("/api/v1/job/hello");
+        getResult.characterEncoding("Encoding");
+        MockMvcBuilders.standaloneSetup(jobController)
+                .build()
+                .perform(getResult)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("text/plain;charset=ISO-8859-1"))
+                .andExpect(MockMvcResultMatchers.content().string("Hello bro"));
+    }
+
+    /**
+     * Method under test: {@link JobController#updateJob(JobDTO, BindingResult, Long)}
      */
     @Test
     void testUpdateJob() throws Exception {
         JobDTO jobDTO = new JobDTO();
         jobDTO.setCompanyName("Company Name");
         jobDTO.setJobDescription("Job Description");
-        jobDTO.setJobId(123L);
         jobDTO.setJobSeekerId(123L);
         jobDTO.setJobTitle("Dr");
         jobDTO.setLocation("Location");
@@ -267,7 +295,7 @@ class JobControllerTest {
         jobDTO.setRecruiterId(123L);
         jobDTO.setSkill("Skill");
         String content = (new ObjectMapper()).writeValueAsString(jobDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/job/updateJob")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/job/updateJob/{id}", 123L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(jobController)

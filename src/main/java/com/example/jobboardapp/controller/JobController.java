@@ -5,6 +5,7 @@ import com.example.jobboardapp.dto.JobListDTO;
 import com.example.jobboardapp.exceptions.InvalidJobException;
 import com.example.jobboardapp.exceptions.JobPortalValidationException;
 import com.example.jobboardapp.service.IJobService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,17 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/job")
+@RequestMapping("/api/v1/job")
 @CrossOrigin(origins = "*")
 public class JobController {
 
     @Autowired
     IJobService jobService;
+
+    @GetMapping("/hello")
+    public String sayHelloBro(){
+        return "Hello bro";
+    }
 
 
     /**
@@ -33,6 +39,7 @@ public class JobController {
      * @PostMapping: Annotation for mapping HTTP POST requests onto specific handler methods.
      */
     @PostMapping("/postJob")
+    @ApiOperation("This endpoint is used to Posts/create job")
     public ResponseEntity<Object> postJob(@Valid @RequestBody JobDTO jobDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             System.out.println("Some errors exist!");
@@ -54,8 +61,9 @@ public class JobController {
 	 * Description : This method updates job in the Job table
 	 * @PostMapping: Annotation for mapping HTTP POST requests onto specific handler methods.
 	 */
-    @PostMapping("/updateJob")
-    public ResponseEntity<Object> updateJob(@Valid @RequestBody JobDTO jobDto, BindingResult bindingResult) {
+    @PostMapping("/updateJob/{id}")
+    @ApiOperation("This endpoint is used to update job")
+    public ResponseEntity<Object> updateJob(@Valid @RequestBody JobDTO jobDto, BindingResult bindingResult, @PathVariable Long id) {
         if (bindingResult.hasErrors()) {
             System.out.println("Some errors exist!");
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -66,7 +74,7 @@ public class JobController {
             }
             throw new JobPortalValidationException(errMessages);
         }
-        jobService.updateJob(jobDto);
+        jobService.updateJob(jobDto,id);
         return new ResponseEntity<>("Job updated Successfully", HttpStatus.OK);
     }
 
@@ -77,6 +85,7 @@ public class JobController {
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
     @GetMapping("/deleteJob/{id}")
+    @ApiOperation("This endpoint is used to delete job")
     public ResponseEntity<Object> deleteJob(@PathVariable Long id) {
         try {
             jobService.deleteJob(id);
@@ -93,6 +102,7 @@ public class JobController {
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
     @GetMapping("/findAllJobs")
+    @ApiOperation("This endpoint is used to get all the job")
     public ResponseEntity<List<JobListDTO>> findAllJobs() {
         //return new ResponseEntity<>(jobService.findAll(), HttpStatus.OK);
         return new ResponseEntity<>(jobService.findAll(), HttpStatus.OK);
@@ -105,6 +115,7 @@ public class JobController {
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
     @GetMapping("/findByRecruiterId/{id}")
+    @ApiOperation("This endpoint is used to get job posted by recuiter id")
     public ResponseEntity<List<JobListDTO>> findByRecruiterId(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(jobService.findByRecruiterId(id), HttpStatus.OK);
@@ -120,10 +131,11 @@ public class JobController {
 	 * Description : This method finds job based on skill from the Job table
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
-    @GetMapping(value = "/findJobsBySkill/{name}")
-    public ResponseEntity<List<JobListDTO>> findJobsBySkill(@PathVariable String name) {
+    @GetMapping(value = "/findJobsBySkill/{skill}")
+    @ApiOperation("This endpoint is used to find job based on skill")
+    public ResponseEntity<List<JobListDTO>> findJobsBySkill(@PathVariable String skill) {
         try {
-            return new ResponseEntity<>(jobService.findJobsBySkill(name), HttpStatus.OK);
+            return new ResponseEntity<>(jobService.findJobsBySkill(skill), HttpStatus.OK);
         } catch (InvalidJobException exception) {
             throw new InvalidJobException("no job with this skill found");
         }
@@ -133,10 +145,11 @@ public class JobController {
 	/**
 	 * @param title
 	 * @return Response Entity of Object type
-	 * Description : This method finds job based on skill from the Job table
+	 * Description : This method finds job based on title from the Job table
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
     @GetMapping(value = "/findJobsByTitle/{title}")
+    @ApiOperation("This endpoint is used to find job based on title")
     public ResponseEntity<List<JobListDTO>> findJobsByTitle(@PathVariable String title) {
         try {
             return new ResponseEntity<>(jobService.findJobsByTitle(title), HttpStatus.OK);
@@ -153,6 +166,7 @@ public class JobController {
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
     @GetMapping(value = "/findJobsByLocation/{location}")
+    @ApiOperation("This endpoint is used to find job based on location")
     public ResponseEntity<List<JobListDTO>> findJobsByLocation(@PathVariable String location) {
         try {
             return new ResponseEntity<>(jobService.findJobsByLocation(location), HttpStatus.OK);

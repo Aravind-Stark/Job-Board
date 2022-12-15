@@ -4,6 +4,7 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 
 import com.example.jobboardapp.dto.JobApplicationDTO;
+import com.example.jobboardapp.dto.JobApplicationStatusDTO;
 import com.example.jobboardapp.entities.Attachment;
 import com.example.jobboardapp.entities.Job;
 import com.example.jobboardapp.entities.JobApplication;
@@ -123,7 +124,7 @@ class JobApplicationControllerTest {
         jobApplicationDTO.setRecruiterId(123L);
         jobApplicationDTO.setStatus("Status");
         String content = (new ObjectMapper()).writeValueAsString(jobApplicationDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/jobApplication/apply")
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/v1/jobApplication/apply")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(jobApplicationController)
@@ -141,7 +142,7 @@ class JobApplicationControllerTest {
     void testFindJobSeekersApplications() throws Exception {
         when(iJobApplicationService.findJobSeekersApplications((Long) any())).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/jobApplication/findJobSeekersApplications/{jobSeekerID}", 1L);
+                .get("/api/v1/jobApplication/findJobSeekersApplications/{jobSeekerID}", 1L);
         MockMvcBuilders.standaloneSetup(jobApplicationController)
                 .build()
                 .perform(requestBuilder)
@@ -157,7 +158,7 @@ class JobApplicationControllerTest {
     void testViewAllApplicationsByRecruiterId() throws Exception {
         when(iJobApplicationService.viewAllApplicationsByRecruiterId((Long) any())).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/jobApplication/viewAllApplicationsByRecruiterId/{recruiterId}", 123L);
+                .get("/api/v1/jobApplication/viewAllApplicationsByRecruiterId/{recruiterId}", 123L);
         MockMvcBuilders.standaloneSetup(jobApplicationController)
                 .build()
                 .perform(requestBuilder)
@@ -167,7 +168,7 @@ class JobApplicationControllerTest {
     }
 
     /**
-     * Method under test: {@link JobApplicationController#updateJobApplicationStatus(Long, JobApplicationDTO, BindingResult)}
+     * Method under test: {@link JobApplicationController#updateJobApplicationStatus(JobApplicationStatusDTO, BindingResult, Long)}
      */
     @Test
     void testUpdateJobApplicationStatus() throws Exception {
@@ -243,16 +244,14 @@ class JobApplicationControllerTest {
         jobApplication.setJobSeeker(jobSeeker1);
         jobApplication.setRecruiter(recruiter1);
         jobApplication.setStatus("Status");
-        when(iJobApplicationService.updateJobApplication((Long) any(), (JobApplicationDTO) any()))
+        when(iJobApplicationService.updateJobApplication((Long) any(), (JobApplicationStatusDTO) any()))
                 .thenReturn(jobApplication);
 
-        JobApplicationDTO jobApplicationDTO = new JobApplicationDTO();
-        jobApplicationDTO.setJobId(123L);
-        jobApplicationDTO.setJobseekerId(123L);
-        jobApplicationDTO.setRecruiterId(123L);
-        jobApplicationDTO.setStatus("Status");
-        String content = (new ObjectMapper()).writeValueAsString(jobApplicationDTO);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.put("/jobApplication/update/{id}", 123L)
+        JobApplicationStatusDTO jobApplicationStatusDTO = new JobApplicationStatusDTO();
+        jobApplicationStatusDTO.setStatus("Status");
+        String content = (new ObjectMapper()).writeValueAsString(jobApplicationStatusDTO);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+                .put("/api/v1/jobApplication/update/{id}", 123L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content);
         MockMvcBuilders.standaloneSetup(jobApplicationController)

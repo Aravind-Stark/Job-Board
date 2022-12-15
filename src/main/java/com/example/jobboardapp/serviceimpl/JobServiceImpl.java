@@ -52,8 +52,8 @@ public class JobServiceImpl implements IJobService {
 	}
 
 	@Override
-	public List<JobListDTO> findJobsBySkill(String name) {
-		List<Job> job = jobdao.findBySkillContainingIgnoreCase(name);
+	public List<JobListDTO> findJobsBySkill(String skill) {
+		List<Job> job = jobdao.findBySkillContainingIgnoreCase(skill);
 		List<JobListDTO> jobListDTOS = new ArrayList<>();
 		System.out.println("job size "+job.size());
 		for(int i=0;i<job.size();i++){
@@ -65,6 +65,7 @@ public class JobServiceImpl implements IJobService {
 			jobListDTO.setLocation(job.get(i).getLocation());
 			jobListDTO.setPostedDate(job.get(i).getPostedDate());
 			jobListDTO.setRecruiterId(job.get(i).getPostedBy().getId());
+			jobListDTO.setCompanyName(job.get(i).getPostedBy().getCompanyName());
 			jobListDTOS.add(jobListDTO);
 		}
 
@@ -119,9 +120,9 @@ public class JobServiceImpl implements IJobService {
 	}
 
 	@Override
-	public Job updateJob(JobDTO jobDto) {
-		Optional<Job> job = jobdao.findById(jobDto.getJobId());
-		if (recruiterDao.existsById(jobDto.getRecruiterId()) && jobdao.existsById(jobDto.getJobId())) {
+	public Job updateJob(JobDTO jobDto,Long id) {
+		Optional<Job> job = jobdao.findById(id);
+		if (recruiterDao.existsById(jobDto.getRecruiterId()) && jobdao.existsById(id)) {
 			job.get().setJobTitle(jobDto.getJobTitle()!=""?jobDto.getJobTitle():job.get().getJobTitle());
 			job.get().setJobDescription(jobDto.getJobDescription()!=""?jobDto.getJobDescription():job.get().getJobDescription());
 			job.get().setLocation(jobDto.getLocation()!=""?jobDto.getLocation():job.get().getLocation());

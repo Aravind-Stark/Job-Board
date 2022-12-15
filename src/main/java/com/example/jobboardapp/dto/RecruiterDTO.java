@@ -12,15 +12,18 @@ public class RecruiterDTO {
 	@NotEmpty(message = "last name cannot be empty")
 	private String lastName;
 
+	private  String companyName;
+
 	public RecruiterDTO() {
 		super();
 	}
 
-	public RecruiterDTO(Long id, String email, String firstName, String lastName) {
+	public RecruiterDTO(Long id, String email, String firstName, String lastName, String companyName) {
 		this.id = id;
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.companyName = companyName;
 	}
 
 	public Long getId() {
@@ -53,5 +56,13 @@ public class RecruiterDTO {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 }

@@ -13,7 +13,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 @Entity
-public class Recruiter implements Users {
+public class Recruiter implements users {
 
 
 	@Id

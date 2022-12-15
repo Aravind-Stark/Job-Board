@@ -1,11 +1,12 @@
 package com.example.jobboardapp.controller;
 
 import com.example.jobboardapp.dto.RecruiterDTO;
+import com.example.jobboardapp.dto.RecruiterRegisterDTO;
 import com.example.jobboardapp.dto.UserLoginDTO;
-import com.example.jobboardapp.entities.Recruiter;
 import com.example.jobboardapp.exceptions.InvalidRecruiterException;
 import com.example.jobboardapp.exceptions.JobPortalValidationException;
 import com.example.jobboardapp.service.IRecruiterService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/recruiter")
+@RequestMapping("/api/v1/recruiter")
 @CrossOrigin(origins = "*")
 public class RecruiterController {
 
@@ -26,13 +27,14 @@ public class RecruiterController {
     IRecruiterService recruiterService;
 
 	/**
-	 * @param Recruiter
+	 * @param RecruiterRegisterDTO
 	 * @return Response Entity of Object type
 	 * Description : This method create/register new Recruiter
 	 * @PostMapping: Annotation for mapping HTTP POST requests onto specific handler methods.
 	 */
     @PostMapping("/createRecruiter")
-    public ResponseEntity<Object> createRecruiter(@Valid @RequestBody Recruiter recruiter,
+    @ApiOperation("This endpoint is used to create/register new Recruiter")
+    public ResponseEntity<Object> createRecruiter(@Valid @RequestBody RecruiterRegisterDTO recruiterRegisterDTO,
                                                   BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
@@ -46,7 +48,7 @@ public class RecruiterController {
             throw new JobPortalValidationException(errMessages);
         }
         try {
-            recruiterService.save(recruiter);
+            recruiterService.save(recruiterRegisterDTO);
         } catch (InvalidRecruiterException exception) {
             throw new InvalidRecruiterException("One or more entered fields contain invalid objects.");
         }
@@ -55,10 +57,11 @@ public class RecruiterController {
 	/**
 	 * @param id
 	 * @return RecruiterDTO
-	 * Description : This method finds recruiter by their isd.
+	 * Description : This method finds recruiter by their id.
 	 * @GetMapping: Annotation for mapping HTTP GET requests onto specific handler methods.
 	 */
     @GetMapping("/getRecruiterById/{id}")
+    @ApiOperation("This endpoint is used to finds recruiter by their id")
     public RecruiterDTO getRecruiterById(@PathVariable Long id) {
         try {
             return recruiterService.findById(id);
@@ -74,10 +77,21 @@ public class RecruiterController {
 	 * @PutMapping: Annotation for mapping HTTP PUT requests onto specific handler methods.
 	 */
     @PutMapping("/updateRecruiter/{id}")
+    @ApiOperation("This endpoint is used to update recruiters details")
     public ResponseEntity<Object> updateRecruiter(@Valid @PathVariable Long id,
-                                                  @RequestBody Recruiter recruiter) {
+                                                  @RequestBody RecruiterRegisterDTO recruiterRegisterDTO,BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("Some errors exist!");
+            List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+
+            List<String> errMessages = new ArrayList<>();
+            for (FieldError fe : fieldErrors) {
+                errMessages.add(fe.getDefaultMessage());
+            }
+            throw new JobPortalValidationException(errMessages);
+        }
         try {
-            recruiterService.update(id, recruiter);
+            recruiterService.update(id, recruiterRegisterDTO);
         } catch (InvalidRecruiterException exception) {
             throw new InvalidRecruiterException("Recruiter with given id not found");
         }
@@ -91,6 +105,7 @@ public class RecruiterController {
 	 * @PostMapping: Annotation for mapping HTTP POST requests onto specific handler methods.
 	 */
     @PostMapping("/recruiterLogin")
+    @ApiOperation("This endpoint is used to Authenticate the recruiter")
     public ResponseEntity<String> recruiterLogin(@RequestBody UserLoginDTO userLoginDTO) {
 
         return new ResponseEntity<>(recruiterService.recruiterLogin(userLoginDTO), HttpStatus.OK);

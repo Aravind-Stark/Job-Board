@@ -67,6 +67,23 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			&lt;!&ndash;<version>2.7.7-SNAPSHOT</version>&ndash;&gt;
 		</dependency>-->
+		<!--<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+		<groupId>io.springfox</groupId>
+		<artifactId>springfox-swagger-ui</artifactId>
+			<version>3.0.0</version>
+		</dependency>-->
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 
 
 	</dependencies>
@@ -78,6 +95,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<!--<finalName>spring-boot-aws-exe</finalName>-->
 	</build>
 
 </project>

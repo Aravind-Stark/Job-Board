@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.jobboardapp.dao.IJobSeekerDao;
+import com.example.jobboardapp.dto.JobSeekerRegisterDTO;
 import com.example.jobboardapp.dto.UserLoginDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,21 +45,15 @@ public class JobSeekerServiceImpl implements IJobSeekerService {
 	}
 
 	@Override
-	public JobSeeker createJobSeeker(JobSeeker jobSeeker) throws Exception {
-		if (!(jobSeeker.getFirstName() == null || jobSeeker.getLastName() == null
-				|| jobSeeker.getPassword() == null)) {
-			/*String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-			try {
-				if(fileName.contains("..")) {
-					throw  new Exception("Filename contains invalid path sequence "
-							+ fileName);
-				}*/
-
-				/*Attachment attachment
-						= new Attachment(fileName,
-						multipartFile.getContentType(),
-						multipartFile.getBytes());
-				jobSeeker.setAttachment(attachment);*/
+	public JobSeeker createJobSeeker(JobSeekerRegisterDTO jobSeekerRegisterDTO) throws Exception {
+		if (!(jobSeekerRegisterDTO.getFirstName() == null || jobSeekerRegisterDTO.getLastName() == null
+				|| jobSeekerRegisterDTO.getPassword() == null)) {
+			   JobSeeker jobSeeker = new JobSeeker();
+			   jobSeeker.setFirstName(jobSeekerRegisterDTO.getFirstName());
+			   jobSeeker.setLastName(jobSeekerRegisterDTO.getLastName());
+			   jobSeeker.setEmail(jobSeekerRegisterDTO.getEmail());
+			   jobSeeker.setPassword(jobSeekerRegisterDTO.getPassword());
+			   jobSeeker.setSkill(jobSeekerRegisterDTO.getSkill());
 				return jobSeekerDao.save(jobSeeker);
 
 			/*} catch (Exception e) {
@@ -69,11 +64,17 @@ public class JobSeekerServiceImpl implements IJobSeekerService {
 	}
 
 	@Override
-	public JobSeeker updateJobSeeker(Long id, JobSeeker jobSeeker) {
+	public JobSeeker updateJobSeeker(Long id, JobSeekerRegisterDTO jobSeekerRegisterDTO) {
 		if (jobSeekerDao.existsById(id)) {
+			JobSeeker jobSeeker = new JobSeeker();
+			jobSeeker.setFirstName(jobSeekerRegisterDTO.getFirstName());
+			jobSeeker.setLastName(jobSeekerRegisterDTO.getLastName());
+			jobSeeker.setEmail(jobSeekerRegisterDTO.getEmail());
+			jobSeeker.setPassword(jobSeekerRegisterDTO.getPassword());
+			jobSeeker.setSkill(jobSeekerRegisterDTO.getSkill());
 			return jobSeekerDao.save(jobSeeker);
 		} else {
-			throw new InvalidJobSeekerException();
+			throw new InvalidJobSeekerException("Please provide valid details");
 		}
 
 	}

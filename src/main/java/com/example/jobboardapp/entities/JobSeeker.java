@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
 @Entity
-public class JobSeeker implements Users {
+public class JobSeeker implements users {
 	@Id
 	@Column(name = "jobseeker_id", updatable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

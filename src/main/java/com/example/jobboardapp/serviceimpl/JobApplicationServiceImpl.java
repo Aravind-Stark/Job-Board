@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.example.jobboardapp.dao.IJobSeekerDao;
 import com.example.jobboardapp.dao.IRecruiterDao;
+import com.example.jobboardapp.dto.JobApplicationStatusDTO;
 import com.example.jobboardapp.dto.JobSeekerDetailsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,10 +57,10 @@ public class JobApplicationServiceImpl implements IJobApplicationService {
 
 
 	@Override
-	public JobApplication updateJobApplication(Long id, JobApplicationDTO jobApplicationDto) {
+	public JobApplication updateJobApplication(Long id, JobApplicationStatusDTO jobApplicationStatusDTO) {
 		if (jobApplicationDao.existsById(id)) {
 			JobApplication jobApplication = jobApplicationDao.findById(id).get();
-			jobApplication.setStatus(jobApplicationDto.getStatus());
+			jobApplication.setStatus(jobApplicationStatusDTO.getStatus());
 			jobApplicationDao.save(jobApplication);
 
 			return jobApplication;
