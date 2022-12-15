@@ -3,7 +3,6 @@ package com.example.jobboardapp.controller;
 import com.example.jobboardapp.dto.RecruiterDTO;
 import com.example.jobboardapp.dto.RecruiterRegisterDTO;
 import com.example.jobboardapp.dto.UserLoginDTO;
-import com.example.jobboardapp.entities.Recruiter;
 import com.example.jobboardapp.exceptions.InvalidRecruiterException;
 import com.example.jobboardapp.exceptions.JobPortalValidationException;
 import com.example.jobboardapp.service.IRecruiterService;

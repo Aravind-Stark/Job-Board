@@ -1,7 +1,6 @@
 package com.example.jobboardapp.controller;
 
 import com.example.jobboardapp.entities.Attachment;
-import com.example.jobboardapp.entities.JobSeeker;
 import com.example.jobboardapp.service.IAttachementService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
