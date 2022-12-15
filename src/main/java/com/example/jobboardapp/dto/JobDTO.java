@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 public class JobDTO {
 
-	private long jobId = 2L;
+//	private long jobId = 2L;
 	private long jobSeekerId = 2L;
 	@NotNull(message = "recruiterid cant be null")
 	private long recruiterId;
@@ -25,8 +25,8 @@ public class JobDTO {
 		super();
 	}
 
-	public JobDTO(long jobId, long jobSeekerId, long recruiterId, String jobTitle, String jobDescription, String location, String skill, LocalDateTime postedDate, String companyName) {
-		this.jobId = jobId;
+	public JobDTO(long jobSeekerId, long recruiterId, String jobTitle, String jobDescription, String location, String skill, LocalDateTime postedDate, String companyName) {
+		//this.jobId = jobId;
 		this.jobSeekerId = jobSeekerId;
 		this.recruiterId = recruiterId;
 		this.jobTitle = jobTitle;
@@ -37,13 +37,13 @@ public class JobDTO {
 		this.companyName = companyName;
 	}
 
-	public long getJobId() {
+/*	public long getJobId() {
 		return jobId;
 	}
 
 	public void setJobId(long jobId) {
 		this.jobId = jobId;
-	}
+	}*/
 
 	public long getJobSeekerId() {
 		return jobSeekerId;

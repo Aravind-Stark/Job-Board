@@ -61,9 +61,9 @@ public class JobController {
 	 * Description : This method updates job in the Job table
 	 * @PostMapping: Annotation for mapping HTTP POST requests onto specific handler methods.
 	 */
-    @PostMapping("/updateJob")
+    @PostMapping("/updateJob/{id}")
     @ApiOperation("This endpoint is used to update job")
-    public ResponseEntity<Object> updateJob(@Valid @RequestBody JobDTO jobDto, BindingResult bindingResult) {
+    public ResponseEntity<Object> updateJob(@Valid @RequestBody JobDTO jobDto, BindingResult bindingResult, @PathVariable Long id) {
         if (bindingResult.hasErrors()) {
             System.out.println("Some errors exist!");
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -74,7 +74,7 @@ public class JobController {
             }
             throw new JobPortalValidationException(errMessages);
         }
-        jobService.updateJob(jobDto);
+        jobService.updateJob(jobDto,id);
         return new ResponseEntity<>("Job updated Successfully", HttpStatus.OK);
     }
 

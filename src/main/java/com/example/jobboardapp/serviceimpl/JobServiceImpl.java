@@ -120,9 +120,9 @@ public class JobServiceImpl implements IJobService {
 	}
 
 	@Override
-	public Job updateJob(JobDTO jobDto) {
-		Optional<Job> job = jobdao.findById(jobDto.getJobId());
-		if (recruiterDao.existsById(jobDto.getRecruiterId()) && jobdao.existsById(jobDto.getJobId())) {
+	public Job updateJob(JobDTO jobDto,Long id) {
+		Optional<Job> job = jobdao.findById(id);
+		if (recruiterDao.existsById(jobDto.getRecruiterId()) && jobdao.existsById(id)) {
 			job.get().setJobTitle(jobDto.getJobTitle()!=""?jobDto.getJobTitle():job.get().getJobTitle());
 			job.get().setJobDescription(jobDto.getJobDescription()!=""?jobDto.getJobDescription():job.get().getJobDescription());
 			job.get().setLocation(jobDto.getLocation()!=""?jobDto.getLocation():job.get().getLocation());

@@ -27,7 +27,7 @@ public interface IJobService {
 	
 	void awardJob(Long jobId, Long jobSeekerId);
 
-	Job updateJob(JobDTO jobDto);
+	Job updateJob(JobDTO jobDto, Long id);
 
 	void deleteJob(Long id);
 
