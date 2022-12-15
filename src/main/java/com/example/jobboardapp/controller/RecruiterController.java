@@ -27,7 +27,7 @@ public class RecruiterController {
     IRecruiterService recruiterService;
 
 	/**
-	 * @param Recruiter
+	 * @param RecruiterRegisterDTO
 	 * @return Response Entity of Object type
 	 * Description : This method create/register new Recruiter
 	 * @PostMapping: Annotation for mapping HTTP POST requests onto specific handler methods.

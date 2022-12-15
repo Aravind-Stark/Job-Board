@@ -30,6 +30,7 @@ public class RecruiterServiceImpl implements IRecruiterService {
 		recruiterDTO.setFirstName(recruiter.getFirstName());
 		recruiterDTO.setLastName(recruiter.getLastName());
 		recruiterDTO.setEmail(recruiter.getEmail());
+		recruiterDTO.setCompanyName(recruiter.getCompanyName());
 		return recruiterDTO;
 
 	}
