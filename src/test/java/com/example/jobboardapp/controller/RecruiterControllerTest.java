@@ -40,19 +40,6 @@ class RecruiterControllerTest {
     /**
      * Method under test: {@link RecruiterController#getRecruiterById(Long)}
      */
-    @Test
-    void testGetRecruiterById() throws Exception {
-        when(iRecruiterService.findById((Long) any())).thenReturn(new RecruiterDTO());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/recruiter/getRecruiterById/{id}",
-                123L);
-        MockMvcBuilders.standaloneSetup(recruiterController)
-                .build()
-                .perform(requestBuilder)
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"id\":null,\"email\":null,\"firstName\":null,\"lastName\":null}"));
-    }
 
     /**
      * Method under test: {@link RecruiterController#updateRecruiter(Long, Recruiter)}
