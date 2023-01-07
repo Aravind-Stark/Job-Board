@@ -5,12 +5,14 @@ About this application
 
 2.modify profile information. ---> JobSeeker and Recruiter
 
-3.search for jobs using location,role and skill. ---> JobSeeker
+3.Upload and delete resume ---> JobSeeker
 
-4.apply for the job and view the application. ---> JobSeeker
+4.search for jobs using location,role and skill. ---> JobSeeker
 
-5.create jobs, update and delete jobs.---> Recruiter
+5.apply for the job and view the application. ---> JobSeeker
 
-6.search for candidates using skill and location.---> Recruiter
+6.create jobs, update and delete jobs.---> Recruiter
 
-7.view all applications for posted jobs ---> Recruiter
+7.search for candidates using skill and location.---> Recruiter
+
+8.view all applications for posted jobs ---> Recruiter
